@@ -4,6 +4,10 @@
 
 1.  Move `inline` keyword setting to config file
 
+## v2.4.2
+
+1. Fix possible stuck when calculating records number in history
+2. Minor code improvements
 
 ## v2.4.1
 

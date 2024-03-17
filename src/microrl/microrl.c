@@ -10,9 +10,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -395,6 +395,9 @@ MICRORL_CFG_STATIC_INLINE void prv_hist_next_record(microrl_hist_rbuf_t* rbuf_pt
     while (rbuf_ptr->ring_buf[++(*idx_ptr)] != '\0') {
         if (*idx_ptr >= MICRORL_ARRAYSIZE(rbuf_ptr->ring_buf)) {
             *idx_ptr -= MICRORL_ARRAYSIZE(rbuf_ptr->ring_buf);
+            if (rbuf_ptr->ring_buf[*idx_ptr] == '\0') {
+                break;
+            }
         }
     }
 }
@@ -477,8 +480,7 @@ static size_t prv_hist_restore_line(microrl_hist_rbuf_t* rbuf_ptr, char* line_st
 
     size_t rec_len = 0;
     size_t k = idx;
-    while (rbuf_ptr->ring_buf[k] != '\0') {     /* Calculating the length of the found record */
-        ++k;
+    while (rbuf_ptr->ring_buf[k++] != '\0') {   /* Calculating the length of the found record */
         if (k >= MICRORL_ARRAYSIZE(rbuf_ptr->ring_buf)) {
             k -= MICRORL_ARRAYSIZE(rbuf_ptr->ring_buf);
         }
@@ -883,7 +885,7 @@ microrlr_t  microrl_set_prompt(microrl_t* mrl, char* prompt_str) {
     }
 
     mrl->prompt_ptr = prompt_str;
-    
+
     return microrlOK;
 }
 
